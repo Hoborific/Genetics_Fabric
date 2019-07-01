@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "genetics.common.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "WorldEvents"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

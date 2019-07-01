@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "genetics.common.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "EntityGeneticEvents",
+    "GenericEntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

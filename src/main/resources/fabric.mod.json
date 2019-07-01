@@ -1,0 +1,11 @@
+{
+  "id": "genetics",
+  "name": "Genetics",
+  "version": "1.0.0",
+  "side": "universal",
+  "initializer": "genetics.Main",
+  "mixins": {
+    "client": "modid.client.json",
+    "common": "modid.common.json"
+  }
+}
