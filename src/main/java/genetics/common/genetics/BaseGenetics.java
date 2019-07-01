@@ -10,6 +10,7 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 
 import static genetics.util.Logger.debugLog;
@@ -32,10 +33,10 @@ public class BaseGenetics implements IGeneticBase {
     @Override
     public int[] getGenetics() {
         if (this.GENETIC_TRACKER.length < 2) {
-            log("ERROR: ENTITY HAS NO GENETICS: " + this.getEntityID() + " " + this.getWorld().getEntityById(this.getEntityID()).getClass().getCanonicalName());
+            log("ERROR: ENTITY HAS NO GENETICS: " + this.getEntityID() + " " + Objects.requireNonNull(this.getWorld().getEntityById(this.getEntityID())).getClass().getCanonicalName());
             initializeGenetics();
             if (this.GENETIC_TRACKER.length < 2) {
-                log("ERROR: ENTITY STILL HAS NO GENETICS: " + this.getEntityID() + " " + this.getWorld().getEntityById(this.getEntityID()).getClass().getCanonicalName());
+                log("ERROR: ENTITY STILL HAS NO GENETICS: " + this.getEntityID() + " " + Objects.requireNonNull(this.getWorld().getEntityById(this.getEntityID())).getClass().getCanonicalName());
                 return new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
             }
         }

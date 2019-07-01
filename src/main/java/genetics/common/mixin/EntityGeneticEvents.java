@@ -31,8 +31,8 @@ import static genetics.util.Logger.log;
 public class EntityGeneticEvents implements IGeneticBase {
     @Shadow
     public World world;
-    Entity e = (Entity) (Object) this;
-    BaseGenetics myGenes = new BaseGenetics((Entity) (Object) this);
+    private Entity e = (Entity) (Object) this;
+    private BaseGenetics myGenes = new BaseGenetics((Entity) (Object) this);
 
 
     @Inject(at = @At("RETURN"), method = "toTag")
@@ -56,6 +56,7 @@ public class EntityGeneticEvents implements IGeneticBase {
             }
         }
     }
+
     @Inject(at = @At("RETURN"), method = "fromTag", cancellable = true)
     public void fromTag(CompoundTag tag, CallbackInfo ci) {
         if (e instanceof LivingEntity)
@@ -108,7 +109,6 @@ public class EntityGeneticEvents implements IGeneticBase {
     @Override
     public void setGeneticsFromPacket(int[] geneticArray) {
         myGenes.setGeneticsFromPacket(geneticArray);
-
     }
 
     @Override

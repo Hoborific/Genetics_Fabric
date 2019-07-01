@@ -3,7 +3,8 @@ package genetics.common.mixin;
 import genetics.common.genetics.IGeneticBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.HorseEntity;
+import net.minecraft.entity.passive.PassiveEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,13 +22,13 @@ import static genetics.util.Logger.log;
         TurtleEntity.class, WolfEntity.class*/
 @Mixin({
         HorseEntity.class
-})//turtle has an egg class and probably doesn't work
+})
 public class GenericEntityMixin {
 
     @Inject(at = @At("RETURN"), method = "createChild", cancellable = true)
     public void createChild(PassiveEntity passiveEntity, CallbackInfoReturnable<LivingEntity> cir) {
         LivingEntity child = cir.getReturnValue();
-        Entity e = (Entity)(Object) this;
+        Entity e = (Entity) (Object) this;
 
         if (!e.world.isClient) {
             /* idk deliver babies or whatever */

@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static genetics.util.Logger.debugLog;
@@ -58,7 +57,7 @@ public class PacketHandling {
             Entity en = wrld.getEntityById(id);
             assert en != null;
             int[] genes = ((IGeneticBase) en).getGenetics();
-            debugLog("ID: "+id +" genes:"+ Arrays.toString(genes));
+            debugLog("ID: " + id + " genes:" + Arrays.toString(genes));
             sendPacketToPlayer(craftGeneticPacket(id, genes), player.world, en.getBlockPos());
             return 1;
         };
@@ -85,18 +84,19 @@ public class PacketHandling {
             List<ServerPlayerEntity> players = Objects.requireNonNull(world.getServer()).getPlayerManager().getPlayerList();
             debugLog(("reached"));
             if (players.size() > 0) {
-                for (ServerPlayerEntity player: players
-                     ) {
-                    if(new Box(pos).expand(160).intersects(player.getBoundingBox())){
+                for (ServerPlayerEntity player : players
+                ) {
+                    if (new Box(pos).expand(160).intersects(player.getBoundingBox())) {
                         player.networkHandler.sendPacket(pak);
                         debugLog(("Proximity Packet Sent"));
-                    }debugLog("out of loop");
+                    }
+                    debugLog("out of loop");
                 }
                 //debugLog("for each player");
-               // for (ServerPlayerEntity player : players) {
+                // for (ServerPlayerEntity player : players) {
                 //    debugLog("sending packet to player");
                 //    player.networkHandler.sendPacket(pak);
-               // }
+                // }
 
             }
             debugLog("end sendPacketToPlayer");

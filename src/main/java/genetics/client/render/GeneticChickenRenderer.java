@@ -35,8 +35,9 @@ public class GeneticChickenRenderer extends MobEntityRenderer<MobEntity, EntityM
 
     //@Override
     public void render(ChickenEntity entity, float x, float y, float z, float entityYaw, float partialTicks, float wtf) {
-        super.render(entity, x, y, z, entityYaw, partialTicks,wtf);
+        super.render(entity, x, y, z, entityYaw, partialTicks, wtf);
     }
+
     //@Override
     protected Identifier getTexture(MobEntity dyeableChickenEntity) {
         return CHICKEN_TEXTURE;

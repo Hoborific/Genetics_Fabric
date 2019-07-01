@@ -39,6 +39,6 @@ public class LayerDyeableFeatureRenderer extends FeatureRenderer<MobEntity, Enti
 
     @Override
     public boolean hasHurtOverlay() {
-        return false;
+        return true;
     }
 }

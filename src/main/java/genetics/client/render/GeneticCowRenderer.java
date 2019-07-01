@@ -25,10 +25,12 @@ public class GeneticCowRenderer extends MobEntityRenderer<MobEntity, EntityModel
         this.addFeature(new LayerDyeableFeatureRenderer(this, COW_LAYER_2, new CowSpotColorLogic(7)));
         this.bindTexture(COW_BASE);
     }
+
     @Override
     public void render(MobEntity entity, float x, float y, float z, float entityYaw, float partialTicks, float wtf) {
         super.render(entity, x, y, z, entityYaw, partialTicks, wtf);
     }
+
     protected Identifier getTexture(MobEntity entity) {
         return COW_BASE;
     }

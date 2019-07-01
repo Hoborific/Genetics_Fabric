@@ -9,7 +9,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class GeneticsSyringeFull extends GeneticsBaseItem {
     public TypedActionResult<ItemStack> use(World world_1, PlayerEntity playerEntity_1, Hand hand_1) {
         ItemStack held = playerEntity_1.getMainHandStack();
 
+        assert held.getTag() != null;
         log("GeneticsSyringeFull use function. Genes: " + Arrays.toString(held.getTag().getIntArray("genetics:genes")));
         return super.use(world_1, playerEntity_1, hand_1);
     }
@@ -32,6 +32,7 @@ public class GeneticsSyringeFull extends GeneticsBaseItem {
     public void appendTooltip(ItemStack itemStack_1, World world_1, List<Text> list_1, TooltipContext tooltipContext_1) {
         if (world_1 != null) {
             if (itemStack_1.hasTag()) {
+                assert itemStack_1.getTag() != null;
                 list_1.add(new TranslatableText(("Animal Type: " + itemStack_1.getTag().getString("genetics:entitytype"))));
                 list_1.add(new TranslatableText(("Genes: " + Arrays.toString(itemStack_1.getTag().getIntArray("genetics:genes")))));
             } else

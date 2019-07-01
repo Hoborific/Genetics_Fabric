@@ -12,7 +12,7 @@ public class CowGenetics extends BaseGenetics {
         super(en);
     }
 
-    @Override
+    //@Override
     public void initializeGenetics() {
         if (!this.getWorld().isClient) {
             log("cow override called");
@@ -20,27 +20,33 @@ public class CowGenetics extends BaseGenetics {
             int[] newGenetics = new int[genomeSize];
 
             for (int i = 0; i < genomeSize; i++) {
-                if (i == 3) { // third index is hide color right now
-                    int temp = randy.nextInt(3) + randy.nextInt(3) + randy.nextInt(4); // weighted towards less than 5 instead of random 0-9
-                    System.out.println(temp);
-                    if (temp <= 1) {
-                        temp = randy.nextInt(1); // 50% chance of zero (black)
+                int temp = 25;
+                if(i == 3){
+                    if(randy.nextInt(8) < 7) {
+                        temp += randy.nextInt(75);
+                        newGenetics[i] = temp;
+                    }else{
+                        temp = 40;
+                        temp += randy.nextInt(211);
+                        newGenetics[i] = temp;
                     }
-                    newGenetics[i] = temp;
-                } else if (i == 7) {
-                    int temp = 2 + randy.nextInt(8);
-                    newGenetics[i] = temp;
-
-                } else {
+                }else if(i == 7){
+                    if(randy.nextInt(8) < 4) {
+                        temp += randy.nextInt(100);
+                        newGenetics[i] = temp;
+                    }else{
+                        temp = 40;
+                        temp += randy.nextInt(211);
+                        newGenetics[i] = temp;
+                    }
+                }
+                if(i != 3 && i != 7){
                     newGenetics[i] = randy.nextInt(10);
                 }
-
             }
             this.setGenetics(newGenetics);
             this.hasGenetics = true;
             log("Initialized Cow Genetics: " + Arrays.toString(this.getGenetics()));
         }
     }
-
-
 }
