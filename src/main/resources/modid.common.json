@@ -4,7 +4,8 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "EntityGeneticEvents",
-    "GenericEntityMixin"
+    "GenericEntityMixin",
+    "EntityChickenEvents"
   ],
   "injectors": {
     "defaultRequire": 1

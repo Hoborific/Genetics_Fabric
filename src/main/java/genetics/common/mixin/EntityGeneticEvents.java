@@ -8,8 +8,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Hand;
@@ -75,7 +77,6 @@ public class EntityGeneticEvents implements IGeneticBase {
         if (e instanceof LivingEntity) {
             log("Interacting with: " + myGenes.getEntityID() + " Genes: " + Arrays.toString(myGenes.getGenetics()));
             if (!world.isClient) {
-                //myGenes.setGenetics(myGenes.getGenetics());
                 ItemStack itemStack_1 = playerEntity_1.getStackInHand(hand_1);
                 if (itemStack_1.getItem() == Initializer.SYRINGE_EMPTY && !playerEntity_1.abilities.creativeMode) {
                     e.damage(DamageSource.GENERIC, 0.5f);
@@ -91,6 +92,18 @@ public class EntityGeneticEvents implements IGeneticBase {
                         playerEntity_1.dropItem(newSyringe, false);
                     }
                     cir.setReturnValue(true);
+                }else if(e instanceof ChickenEntity){
+                    if(itemStack_1.getItem() instanceof DyeItem){
+                        int[] tempGenes = myGenes.getGenetics();
+                        tempGenes[0] = ((DyeItem)itemStack_1.getItem()).getColor().getId();
+                        myGenes.setGenetics(tempGenes);
+
+                        if(!playerEntity_1.abilities.creativeMode){
+                            itemStack_1.setCount(itemStack_1.getCount() - 1);
+                        }
+
+                        log("dyed");
+                    }
                 }
             }
         }
