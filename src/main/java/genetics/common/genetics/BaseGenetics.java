@@ -112,7 +112,7 @@ public class BaseGenetics implements IGeneticBase {
         int[] newGenetics = new int[genomeSize];
 
         for (int i = 0; i < genomeSize; i++) {
-            newGenetics[i] = randy.nextInt(10);
+            newGenetics[i] = randy.nextInt(16);
         }
 
         return newGenetics;

@@ -3,6 +3,7 @@ package genetics.common.mixin;
 import genetics.common.genetics.BaseGenetics;
 import genetics.common.genetics.CowGenetics;
 import genetics.common.genetics.IGeneticBase;
+import genetics.common.genetics.LlamaGenetics;
 import genetics.init.Initializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -10,6 +11,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.passive.LlamaEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
@@ -53,7 +55,10 @@ public class EntityGeneticEvents implements IGeneticBase {
             if (e instanceof CowEntity) {// this should probably not be in the event but in a function called by the event
                 myGenes = new CowGenetics((Entity) (Object) this);
                 myGenes.initializeGenetics();
-            } else {
+            } else if(e instanceof LlamaEntity){
+                myGenes = new LlamaGenetics((Entity) (Object) this);
+                ((LlamaGenetics)myGenes).initializeGenetics((LlamaEntity) (Object)this);
+            }else{
                 myGenes.initializeGenetics();
             }
         }
@@ -74,6 +79,7 @@ public class EntityGeneticEvents implements IGeneticBase {
 
     @Inject(at = @At("RETURN"), method = "interact", cancellable = true)
     public void interact(PlayerEntity playerEntity_1, Hand hand_1, CallbackInfoReturnable cir) {
+        log("called interact event");
         if (e instanceof LivingEntity) {
             log("Interacting with: " + myGenes.getEntityID() + " Genes: " + Arrays.toString(myGenes.getGenetics()));
             if (!world.isClient) {
@@ -92,7 +98,7 @@ public class EntityGeneticEvents implements IGeneticBase {
                         playerEntity_1.dropItem(newSyringe, false);
                     }
                     cir.setReturnValue(true);
-                }else if(e instanceof ChickenEntity){
+                }else if(e instanceof ChickenEntity ){
                     if(itemStack_1.getItem() instanceof DyeItem){
                         int[] tempGenes = myGenes.getGenetics();
                         tempGenes[0] = ((DyeItem)itemStack_1.getItem()).getColor().getId();
@@ -101,8 +107,6 @@ public class EntityGeneticEvents implements IGeneticBase {
                         if(!playerEntity_1.abilities.creativeMode){
                             itemStack_1.setCount(itemStack_1.getCount() - 1);
                         }
-
-                        log("dyed");
                     }
                 }
             }

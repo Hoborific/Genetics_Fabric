@@ -5,7 +5,8 @@
   "mixins": [
     "EntityGeneticEvents",
     "GenericEntityMixin",
-    "EntityChickenEvents"
+    "EntityChickenEvents",
+    "EntityAbstractDonkeyEvents"
   ],
   "injectors": {
     "defaultRequire": 1

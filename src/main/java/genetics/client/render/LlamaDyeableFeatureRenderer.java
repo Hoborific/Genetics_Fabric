@@ -4,32 +4,26 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import genetics.client.geneticRenderLogic.IColorLogic;
 import net.minecraft.client.render.entity.feature.FeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.client.render.entity.model.LlamaEntityModel;
+import net.minecraft.entity.passive.LlamaEntity;
 import net.minecraft.util.Identifier;
 
 
-public class LayerDyeableFeatureRenderer extends FeatureRenderer<MobEntity, EntityModel<MobEntity>> {
-    private final EntityModel<MobEntity> myModel;
-    private final Identifier LAYER_TEXTURES;
+public class LlamaDyeableFeatureRenderer extends FeatureRenderer<LlamaEntity, LlamaEntityModel<LlamaEntity>> {
+    private final LlamaEntityModel<LlamaEntity> myModel;
+    private final Identifier LAYER_TEXTURE;
     private IColorLogic myColorLogic;
 
-    LayerDyeableFeatureRenderer(FeatureRendererContext<MobEntity, EntityModel<MobEntity>> var1, Identifier texture, IColorLogic myColorLogic) {
+    LlamaDyeableFeatureRenderer(FeatureRendererContext<LlamaEntity, LlamaEntityModel<LlamaEntity>> var1, Identifier texture, IColorLogic myColorLogic) {
         super(var1);
         myModel = var1.getModel();
-        LAYER_TEXTURES = texture;
+        LAYER_TEXTURE = texture;
         this.myColorLogic = myColorLogic;
-
-
     }
-/*
-    private DyeColor getColor(Entity entity) {
-        return DyeColor.byId(((IGeneticBase) entity).getGenetics()[geneticToTrack]);
-    }*/
 
     @Override
-    public void render(MobEntity en, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
-        this.bindTexture(LAYER_TEXTURES);
+    public void render(LlamaEntity en, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
+        this.bindTexture(LAYER_TEXTURE);
         float[] afloat = myColorLogic.geneticsToRGB(en);
         GlStateManager.enableColorMaterial();
         GlStateManager.color3f(afloat[0], afloat[1], afloat[2]);
