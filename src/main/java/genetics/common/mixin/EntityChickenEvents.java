@@ -29,20 +29,16 @@ public class EntityChickenEvents {
 
     @Shadow
     public int eggLayTime;
-    private int dyeLayTime = new Random().nextInt(6000) + 6000;
     private ChickenEntity e = (ChickenEntity) (Object) this;
     private Random randy = new Random();
 
     @Inject(at = @At("HEAD"), method = "tickMovement", cancellable = true)
     public void tickMovement(CallbackInfo ci) {
-        if(!this.e.world.isClient && e.isAlive() && !e.isBaby() && !e.hasJockey() && --this.dyeLayTime >= 0){
-            if(this.dyeLayTime <= 0){
-                int index = ((IGeneticBase)e).getGeneticByIndex(0);
-                if(index != 0){
-                    e.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (randy.nextFloat() - randy.nextFloat()) * 0.2F + 1.0F);
-                    e.dropItem(DyeItem.byColor(DyeColor.byId(index)));
-                    dyeLayTime = new Random().nextInt(6000) + 6000;
-                }
+        if(!this.e.world.isClient && e.isAlive() && !e.isBaby() && !e.hasJockey() && --this.eggLayTime <= 0){
+            int index = ((IGeneticBase)e).getGeneticByIndex(0);
+            if(index != 0){
+                e.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (randy.nextFloat() - randy.nextFloat()) * 0.2F + 1.0F);
+                e.dropItem(DyeItem.byColor(DyeColor.byId(index)));
             }
         }
     }
