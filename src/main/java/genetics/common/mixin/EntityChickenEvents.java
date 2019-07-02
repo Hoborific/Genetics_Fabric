@@ -11,17 +11,42 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.DyeColor;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
+import java.util.Random;
 
 
 @Mixin(ChickenEntity.class)
 public class EntityChickenEvents {
+
+    @Shadow
+    public int eggLayTime;
+    private int dyeLayTime = new Random().nextInt(6000) + 6000;
+    private ChickenEntity e = (ChickenEntity) (Object) this;
+    private Random randy = new Random();
+
+    @Inject(at = @At("HEAD"), method = "tickMovement", cancellable = true)
+    public void tickMovement(CallbackInfo ci) {
+        if(!this.e.world.isClient && e.isAlive() && !e.isBaby() && !e.hasJockey() && --this.dyeLayTime >= 0){
+            if(this.dyeLayTime <= 0){
+                int index = ((IGeneticBase)e).getGeneticByIndex(0);
+                if(index != 0){
+                    e.playSound(SoundEvents.ENTITY_CHICKEN_EGG, 1.0F, (randy.nextFloat() - randy.nextFloat()) * 0.2F + 1.0F);
+                    e.dropItem(DyeItem.byColor(DyeColor.byId(index)));
+                    dyeLayTime = new Random().nextInt(6000) + 6000;
+                }
+            }
+        }
+    }
+
 
     @Inject(at = @At("RETURN"), method = "method_6471", cancellable = true) // I was too busy seeing if I could, I never stopped to ask myself if I should, this class is an abomination and a sin against code.
     public void method_6471(PassiveEntity passiveEntity_1, CallbackInfoReturnable cir) {
@@ -29,15 +54,14 @@ public class EntityChickenEvents {
         ChickenEntity myChicken = EntityType.CHICKEN.create(passiveEntity_1.world);
         if (!passiveEntity_1.world.isClient) {
             {
-                int[] parent1 = ((IGeneticBase) this).getGenetics();
-                int[] parent2 = ((IGeneticBase) passiveEntity_1).getGenetics();
-                ((IGeneticBase) myChicken).initializeGenetics(parent1, parent2);
+                int parent1 = ((IGeneticBase) this).getGeneticByIndex(0);
+                int parent2 = ((IGeneticBase) passiveEntity_1).getGeneticByIndex(0);
+
+                ((IGeneticBase) myChicken).initializeGenetics(((IGeneticBase) this).getGenetics(),((IGeneticBase) passiveEntity_1).getGenetics());
                 int[] childGenes = ((IGeneticBase) myChicken).getGenetics();
 
-                DyeColor dyeColor_1 = DyeColor.byId(((IGeneticBase) this).getGenetics()[0]);
-                DyeColor dyeColor_2 = DyeColor.byId(((IGeneticBase) passiveEntity_1).getGenetics()[0]);
-
-                int[] p2 = ((IGeneticBase) passiveEntity_1).getGenetics();
+                DyeColor dyeColor_1 = DyeColor.byId(parent1);
+                DyeColor dyeColor_2 = DyeColor.byId(parent2);
 
                 CraftingInventory DyeInventory = new CraftingInventory(new Container((ContainerType) null, -1) {
                     public boolean canUse(PlayerEntity playerEntity_1) {

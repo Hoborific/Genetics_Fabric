@@ -20,8 +20,6 @@ public class BaseGenetics implements IGeneticBase {
 
     public Boolean hasGenetics = false;
     public Boolean hasParents = false;
-    public int parent1;
-    public int parent2;
     protected int[] GENETIC_TRACKER;
     private Entity myself;
 
