@@ -3,6 +3,7 @@ package genetics.common.genetics;
 
 import com.sun.istack.internal.NotNull;
 import genetics.common.net.PacketHandling;
+import genetics.util.Logger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
@@ -46,8 +47,10 @@ public class BaseGenetics implements IGeneticBase {
         if (myself instanceof PlayerEntity) return;
         if (myself.getEntityWorld().isClient) {
             debugLog("CALLED setGenetics on CLIENT");
-            myself.setCustomName(new TranslatableText(Arrays.toString(genes)));
-            myself.setCustomNameVisible(true);
+            if(Logger.debugMode){
+                myself.setCustomName(new TranslatableText(Arrays.toString(genes)));
+                myself.setCustomNameVisible(true);
+            }
         } else {
             debugLog("sending packet");
             Packet pacman = PacketHandling.craftGeneticPacket(myself.getEntityId(), GENETIC_TRACKER);

@@ -1,10 +1,12 @@
 package genetics.client.render;
 
 
+import com.mojang.blaze3d.platform.GlStateManager;
 import genetics.client.geneticRenderLogic.ChickenColorLogic;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.render.EntityRendererRegistry;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.render.entity.model.ChickenEntityModel;
@@ -33,12 +35,28 @@ public class GeneticChickenRenderer extends MobEntityRenderer<MobEntity, EntityM
         return (MathHelper.sin(var3) + 1.0F) * var4;
     }
 
-    //@Override
-    public void render(ChickenEntity entity, float x, float y, float z, float entityYaw, float partialTicks, float wtf) {
-        super.render(entity, x, y, z, entityYaw, partialTicks, wtf);
+    @Override
+    public void render(MobEntity entity, float x, float y, float z, float entityYaw, float partialTicks, float scale) {
+        boolean boolean_1 = this.method_4056(entity);
+        boolean boolean_2 = !boolean_1 && !entity.canSeePlayer(MinecraftClient.getInstance().player);
+        if (boolean_1 || boolean_2) {
+            if (!this.bindEntityTexture(entity)) {
+                return;
+            }
+
+            if (boolean_2) {
+                GlStateManager.setProfile(GlStateManager.RenderMode.TRANSPARENT_MODEL);
+            }
+
+            this.model.render(entity, x, y, z, entityYaw, partialTicks, scale);
+            if (boolean_2) {
+                GlStateManager.unsetProfile(GlStateManager.RenderMode.TRANSPARENT_MODEL);
+            }
+        }
+        super.render(entity, x, y, z, entityYaw, partialTicks, scale);
     }
 
-    //@Override
+    @Override
     protected Identifier getTexture(MobEntity dyeableChickenEntity) {
         return CHICKEN_TEXTURE;
     }
