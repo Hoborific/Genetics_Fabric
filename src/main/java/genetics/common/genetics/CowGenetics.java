@@ -2,10 +2,7 @@ package genetics.common.genetics;
 
 import net.minecraft.entity.Entity;
 
-import java.util.Arrays;
 import java.util.Random;
-
-import static genetics.util.Logger.log;
 
 public class CowGenetics extends BaseGenetics {
     public CowGenetics(Entity en) {
@@ -15,7 +12,7 @@ public class CowGenetics extends BaseGenetics {
     //@Override
     public void initializeGenetics() {
         if (!this.getWorld().isClient) {
-            log("cow override called");
+            //log("cow override called");
             Random randy = new Random();
             int[] newGenetics = new int[genomeSize];
 
@@ -46,7 +43,7 @@ public class CowGenetics extends BaseGenetics {
             }
             this.setGenetics(newGenetics);
             this.hasGenetics = true;
-            log("Initialized Cow Genetics: " + Arrays.toString(this.getGenetics()));
+            //log("Initialized Cow Genetics: " + Arrays.toString(this.getGenetics()));
         }
     }
 }

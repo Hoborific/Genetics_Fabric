@@ -1,0 +1,6 @@
+{
+  "parent": "genetics:block/blockjar",
+  "textures": {
+    "all": "block/white_stained_glass"
+  }
+}

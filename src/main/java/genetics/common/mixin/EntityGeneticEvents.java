@@ -17,6 +17,7 @@ import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Hand;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -67,15 +68,14 @@ public class EntityGeneticEvents implements IGeneticBase {
     @Inject(at = @At("RETURN"), method = "fromTag", cancellable = true)
     public void fromTag(CompoundTag tag, CallbackInfo ci) {
         if (e instanceof LivingEntity)
-            if (!world.isClient) {
+            //if (!world.isClient) {
 
                 myGenes.setGenetics(tag.getIntArray("genetics:genes"));
                 myGenes.hasGenetics = tag.getBoolean("genetics:hasGenetics");
                 debugLog("Loaded from tag Genetics " + Arrays.toString(myGenes.getGenetics()));
-            }
+        //}
     }
 
-    // Following function interferes with interaction behavior
 
     @Inject(at = @At("RETURN"), method = "interact", cancellable = true)
     public void interact(PlayerEntity playerEntity_1, Hand hand_1, CallbackInfoReturnable cir) {
@@ -107,6 +107,23 @@ public class EntityGeneticEvents implements IGeneticBase {
                         if(!playerEntity_1.abilities.creativeMode){
                             itemStack_1.setCount(itemStack_1.getCount() - 1);
                         }
+                    }
+                }
+                if (itemStack_1.getItem() == Initializer.BLOCK_JAR.asItem()) {
+                    log("jar event triggered");
+                    itemStack_1.setCount(itemStack_1.getCount() - 1);
+                    ItemStack newJar = new ItemStack(Initializer.BLOCK_JAR.asItem());
+                    CompoundTag entityInfo = new CompoundTag();
+                    CompoundTag entity = new CompoundTag();
+                    e.toTag(entity);
+                    entityInfo.putString("genetics:entitytype", e.getName().getString());
+                    entityInfo.putString("entity_id", Registry.ENTITY_TYPE.getId(e.getType()).toString());
+                    entityInfo.put("entityData", entity);
+                    newJar.setTag(entityInfo);
+                    if (itemStack_1.isEmpty()) {
+                        playerEntity_1.setStackInHand(hand_1, newJar);
+                    } else if (!playerEntity_1.inventory.insertStack(newJar)) {
+                        playerEntity_1.dropItem(newJar, false);
                     }
                 }
             }

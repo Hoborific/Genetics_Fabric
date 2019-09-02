@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "genetics:block/blockjar"
+    }
+  }
+}

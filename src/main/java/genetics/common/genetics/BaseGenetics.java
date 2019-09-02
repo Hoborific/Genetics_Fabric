@@ -1,7 +1,6 @@
 package genetics.common.genetics;
 
 
-import com.sun.istack.internal.NotNull;
 import genetics.common.net.PacketHandling;
 import genetics.util.Logger;
 import net.minecraft.entity.Entity;
@@ -89,7 +88,7 @@ public class BaseGenetics implements IGeneticBase {
     }
 
     @Override
-    public int[] generateGenetics(@NotNull int[] parent1, @NotNull int[] parent2) {
+    public int[] generateGenetics(int[] parent1, int[] parent2) {
         int[] newGenetics = new int[genomeSize];
 
         if ((parent1.length < genomeSize) || (parent2.length < genomeSize)) {

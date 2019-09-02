@@ -1,7 +1,5 @@
 package genetics.common.genetics;
 
-import com.sun.istack.internal.NotNull;
-
 public interface IGeneticBase {
     int genomeSize = 10;
 
@@ -15,11 +13,12 @@ public interface IGeneticBase {
 
     int[] getGenetics();
 
-    int[] generateGenetics(@NotNull int[] parent1, @NotNull int[] parent2);
+    int[] generateGenetics(int[] parent1, int[] parent2);
 
     int[] generateGenetics();
 
     int getGeneticByIndex(int in);
 
     void setGeneticsInherited(int[] arr);
+
 }

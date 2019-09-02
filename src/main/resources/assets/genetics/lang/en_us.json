@@ -1,4 +1,6 @@
 {
   "item.genetics.geneticssyringe_empty": "Empty Sample Syringe",
-  "item.genetics.geneticssyringe_full": "Filled Sample Syringe"
+  "item.genetics.geneticssyringe_full": "Filled Sample Syringe",
+  "block.genetics.blockjar": "Jar",
+  "item.genetics.blockjar": "Jar"
 }

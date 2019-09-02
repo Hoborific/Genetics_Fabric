@@ -6,7 +6,8 @@
     "EntityGeneticEvents",
     "GenericEntityMixin",
     "EntityChickenEvents",
-    "EntityAbstractDonkeyEvents"
+    "EntityAbstractDonkeyEvents",
+    "CauldronMixin"
   ],
   "injectors": {
     "defaultRequire": 1
