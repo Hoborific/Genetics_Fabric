@@ -6,9 +6,10 @@ import genetics.common.BlockEntity.JarBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.MobEntityWithAi;
 
 public class JarBlockEntityRenderer extends BlockEntityRenderer<JarBlockEntity> {
-    private LivingEntity ent;
+    private MobEntityWithAi ent;
 
     @Override
     public void render(JarBlockEntity blockEntity_1, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -18,7 +19,7 @@ public class JarBlockEntityRenderer extends BlockEntityRenderer<JarBlockEntity> 
 
         int light = blockEntity_1.getWorld().getLightmapIndex(blockEntity_1.getPos().up(), 0);
         GLX.glMultiTexCoord2f(GLX.GL_TEXTURE1, (float) (light & 0xFFFF), (float) ((light >> 16) & 0xFFFF));
-        ent = blockEntity_1.getEntity();
+        ent = (MobEntityWithAi)blockEntity_1.getEntity();
         if (ent != null) {
             ent.setPositionAnglesAndUpdate(x, y, z, partialTicks, partialTicks);
             MinecraftClient.getInstance().getEntityRenderManager().render(ent, 0.0f, 0.0f, 0.0f, 1f, 1f, false);

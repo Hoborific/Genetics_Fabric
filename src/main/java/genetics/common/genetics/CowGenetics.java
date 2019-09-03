@@ -38,7 +38,7 @@ public class CowGenetics extends BaseGenetics {
                     }
                 }
                 if(i != 3 && i != 7){
-                    newGenetics[i] = randy.nextInt(16);
+                    newGenetics[i] = randy.nextInt(max_Random);
                 }
             }
             this.setGenetics(newGenetics);

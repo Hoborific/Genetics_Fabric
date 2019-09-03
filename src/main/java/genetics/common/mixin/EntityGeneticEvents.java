@@ -1,9 +1,6 @@
 package genetics.common.mixin;
 
-import genetics.common.genetics.BaseGenetics;
-import genetics.common.genetics.CowGenetics;
-import genetics.common.genetics.IGeneticBase;
-import genetics.common.genetics.LlamaGenetics;
+import genetics.common.genetics.*;
 import genetics.init.Initializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -12,10 +9,12 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.LlamaEntity;
+import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
@@ -59,6 +58,8 @@ public class EntityGeneticEvents implements IGeneticBase {
             } else if(e instanceof LlamaEntity){
                 myGenes = new LlamaGenetics((Entity) (Object) this);
                 ((LlamaGenetics)myGenes).initializeGenetics((LlamaEntity) (Object)this);
+            }else if(e instanceof PolarBearEntity) {
+                myGenes = new PolarBearGenetics((Entity) (Object) this);
             }else{
                 myGenes.initializeGenetics();
             }
@@ -98,7 +99,7 @@ public class EntityGeneticEvents implements IGeneticBase {
                         playerEntity_1.dropItem(newSyringe, false);
                     }
                     cir.setReturnValue(true);
-                }else if(e instanceof ChickenEntity ){
+                }else if(e instanceof ChickenEntity || e instanceof PolarBearEntity){
                     if(itemStack_1.getItem() instanceof DyeItem){
                         int[] tempGenes = myGenes.getGenetics();
                         tempGenes[0] = ((DyeItem)itemStack_1.getItem()).getColor().getId();
@@ -106,6 +107,9 @@ public class EntityGeneticEvents implements IGeneticBase {
 
                         if(!playerEntity_1.abilities.creativeMode){
                             itemStack_1.setCount(itemStack_1.getCount() - 1);
+                            if(e instanceof PolarBearEntity){
+                                ((PolarBearEntity) e).setTarget(playerEntity_1);
+                            }
                         }
                     }
                 }

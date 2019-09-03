@@ -22,6 +22,7 @@ public class BaseGenetics implements IGeneticBase {
     public Boolean hasParents = false;
     protected int[] GENETIC_TRACKER;
     private Entity myself;
+    int max_Random = 20;
 
     public BaseGenetics(Entity en) {
         this.myself = en;
@@ -114,7 +115,7 @@ public class BaseGenetics implements IGeneticBase {
         int[] newGenetics = new int[genomeSize];
 
         for (int i = 0; i < genomeSize; i++) {
-            newGenetics[i] = randy.nextInt(16);
+            newGenetics[i] = randy.nextInt(max_Random);
         }
 
         return newGenetics;

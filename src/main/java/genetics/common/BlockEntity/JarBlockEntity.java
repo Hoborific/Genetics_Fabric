@@ -5,6 +5,7 @@ import genetics.util.Logger;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.mob.MobEntityWithAi;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
@@ -13,7 +14,7 @@ import net.minecraft.util.registry.Registry;
 public class JarBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
 
 
-    private LivingEntity entity;
+    private MobEntityWithAi entity;
     private Identifier myEntityType;
     private CompoundTag entityData;
     private int tickCount = 0;
@@ -47,7 +48,7 @@ public class JarBlockEntity extends BlockEntity implements BlockEntityClientSeri
         if (entity == null) {
             if (myEntityType != null) {
                 Logger.log("created entity");
-                entity = (LivingEntity) Registry.ENTITY_TYPE.get(myEntityType).create(world);
+                entity = (MobEntityWithAi) Registry.ENTITY_TYPE.get(myEntityType).create(world);
                 assert entity != null;
                 entity.fromTag(entityData);
                 initializeTasks(entity);
@@ -56,10 +57,12 @@ public class JarBlockEntity extends BlockEntity implements BlockEntityClientSeri
         return entity;
     }
 
-    public void initializeTasks(LivingEntity entity) {
+    public void initializeTasks(MobEntityWithAi entity) {
 
     }
-
+    public Identifier getMyEntityType(){
+        return myEntityType;
+    }
     @Override
     public void fromClientTag(CompoundTag tag) {
         Logger.log(tag.toString());

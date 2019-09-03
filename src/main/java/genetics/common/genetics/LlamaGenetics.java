@@ -11,7 +11,6 @@ public class LlamaGenetics extends BaseGenetics {
     public LlamaGenetics(Entity en) {
         super(en);
     }
-
     public void initializeGenetics(LlamaEntity en) {
         if (!this.getWorld().isClient) {
             Random randy = new Random();
@@ -20,7 +19,7 @@ public class LlamaGenetics extends BaseGenetics {
                 if(i == 5) { // primary color gene index
                     int num = randy.nextInt(11);
                     if (num < 1) {
-                        newGenetics[i] = randy.nextInt(16);
+                        newGenetics[i] = randy.nextInt(max_Random);
                     } else {
                         switch (randy.nextInt(4)) {
                             case 0:
@@ -36,13 +35,13 @@ public class LlamaGenetics extends BaseGenetics {
                                 newGenetics[i] = 8;
                                 break;
                             default:
-                                newGenetics[i] = randy.nextInt(16);
+                                newGenetics[i] = randy.nextInt(max_Random);
                                 break;
                         }
                     }
                 }
                 else{
-                    newGenetics[i] = randy.nextInt(16);
+                    newGenetics[i] = randy.nextInt(max_Random);
                 }
             }
             this.setGenetics(newGenetics);

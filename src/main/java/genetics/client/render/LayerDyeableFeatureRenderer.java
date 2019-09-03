@@ -22,10 +22,6 @@ public class LayerDyeableFeatureRenderer extends FeatureRenderer<MobEntity, Enti
 
 
     }
-/*
-    private DyeColor getColor(Entity entity) {
-        return DyeColor.byId(((IGeneticBase) entity).getGenetics()[geneticToTrack]);
-    }*/
 
     @Override
     public void render(MobEntity en, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
