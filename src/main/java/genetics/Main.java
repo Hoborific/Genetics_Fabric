@@ -1,6 +1,7 @@
 package genetics;
 
 import genetics.client.render.*;
+import genetics.common.BlockEntity.ChickenCubeBlockEntity;
 import genetics.common.BlockEntity.JarBlockEntity;
 import genetics.init.Initializer;
 import net.fabricmc.api.ModInitializer;
@@ -27,6 +28,7 @@ public class Main implements ModInitializer {
         EntityRendererRegistry.INSTANCE.register(LlamaEntity.class, GeneticLlamaRenderer::new);
         EntityRendererRegistry.INSTANCE.register(PolarBearEntity.class, GeneticPolarBearRenderer::new);
         BlockEntityRendererRegistry.INSTANCE.register(JarBlockEntity.class, new JarBlockEntityRenderer());
+        BlockEntityRendererRegistry.INSTANCE.register(ChickenCubeBlockEntity.class, new ChickenCubeBlockEntityRenderer());
 
         ClientSidePacketRegistry.INSTANCE.register(GENETIC_SYNC_PACKET, SYNC_PACKET_CONSUMER); // SERVER 2 CLIENT CONSUMER
         ServerSidePacketRegistry.INSTANCE.register(GENETIC_REQUEST_PACKET, REQUEST_PACKET_CONSUMER); // CLIENT TO SERVER CONSUMER

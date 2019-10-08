@@ -23,14 +23,15 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class JarBlockItem extends BlockItem {
+
+public class ItemBlockChickenCube extends BlockItem {
     private Block block;
+    public boolean isEmpty = true;
 
-    public JarBlockItem(Block block_1, Settings item$Settings_1) {
+    public ItemBlockChickenCube(Block block_1, Settings item$Settings_1) {
         super(block_1, item$Settings_1);
-        block = block_1;
+        this.block = block_1;
     }
-
     public static boolean writeTagToBlockEntity(World world_1, PlayerEntity playerEntity_1, BlockPos blockPos_1, ItemStack itemStack_1) {
         Logger.log("called");
         MinecraftServer minecraftServer_1 = world_1.getServer();
@@ -47,12 +48,14 @@ public class JarBlockItem extends BlockItem {
                 compoundTag_2.putInt("x", blockPos_1.getX());
                 compoundTag_2.putInt("y", blockPos_1.getY());
                 compoundTag_2.putInt("z", blockPos_1.getZ());
-                if (itemStack_1.getTag().containsKey("entity_id")) {
-                    compoundTag_2.putString("entity_id", itemStack_1.getTag().getString("entity_id"));
-                    compoundTag_2.put("entityData", itemStack_1.getTag().getCompound("entityData"));
-                    Logger.log("wrote item data to blockentity");
+                if (itemStack_1.hasTag()) {
+                    if (itemStack_1.getTag().containsKey("entity_id")) {
+                        compoundTag_2.putString("entity_id", itemStack_1.getTag().getString("entity_id"));
+                        compoundTag_2.put("entityData", itemStack_1.getTag().getCompound("entityData"));
+                        Logger.log("wrote item data to blockentity");
+                    }
+                    blockEntity_1.fromTag(compoundTag_2);
                 }
-                blockEntity_1.fromTag(compoundTag_2);
             }
             return false;
         }
@@ -66,8 +69,10 @@ public class JarBlockItem extends BlockItem {
                 list_1.add(new TranslatableText(("Animal Type: " + itemStack_1.getTag().getString("genetics:entitytype"))));
                 list_1.add(new TranslatableText("entity_id:" + itemStack_1.getTag().getString("entity_id")));
                 //list_1.add(new TranslatableText("data:" + itemStack_1.getTag().getCompound("entityData").toString()));
+                isEmpty = false;
             } else {
-                list_1.add(new TranslatableText("Empty Jar"));
+                list_1.add(new TranslatableText("Empty ChickenCube"));
+                isEmpty = true;
             }
         }
     }
@@ -116,4 +121,3 @@ public class JarBlockItem extends BlockItem {
         return writeTagToBlockEntity(world_1, playerEntity_1, blockPos_1, itemStack_1);
     }
 }
-

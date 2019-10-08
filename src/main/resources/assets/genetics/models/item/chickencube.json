@@ -1,0 +1,6 @@
+{
+  "parent": "genetics:block/chickencube",
+  "textures": {
+    "all": "block/oak_log"
+  }
+}

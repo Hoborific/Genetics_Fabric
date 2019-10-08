@@ -2,6 +2,9 @@ package genetics.common.mixin;
 
 import genetics.common.genetics.*;
 import genetics.init.Initializer;
+import genetics.items.ItemBlockChickenCube;
+import genetics.items.ItemBlockJar;
+import genetics.util.Logger;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -71,9 +74,9 @@ public class EntityGeneticEvents implements IGeneticBase {
         if (e instanceof LivingEntity)
             //if (!world.isClient) {
 
-                myGenes.setGenetics(tag.getIntArray("genetics:genes"));
-                myGenes.hasGenetics = tag.getBoolean("genetics:hasGenetics");
-                debugLog("Loaded from tag Genetics " + Arrays.toString(myGenes.getGenetics()));
+            myGenes.setGenetics(tag.getIntArray("genetics:genes"));
+        myGenes.hasGenetics = tag.getBoolean("genetics:hasGenetics");
+        debugLog("Loaded from tag Genetics " + Arrays.toString(myGenes.getGenetics()));
         //}
     }
 
@@ -113,21 +116,53 @@ public class EntityGeneticEvents implements IGeneticBase {
                         }
                     }
                 }
-                if (itemStack_1.getItem() == Initializer.BLOCK_JAR.asItem()) {
-                    log("jar event triggered");
-                    itemStack_1.setCount(itemStack_1.getCount() - 1);
-                    ItemStack newJar = new ItemStack(Initializer.BLOCK_JAR.asItem());
+                if (itemStack_1.getItem() == Initializer.BLOCK_JAR.asItem() || itemStack_1.getItem() == Initializer.BLOCK_CHICKENCUBE.asItem()) {
+                    ItemStack newItem = null;
                     CompoundTag entityInfo = new CompoundTag();
                     CompoundTag entity = new CompoundTag();
-                    e.toTag(entity);
-                    entityInfo.putString("genetics:entitytype", e.getName().getString());
-                    entityInfo.putString("entity_id", Registry.ENTITY_TYPE.getId(e.getType()).toString());
-                    entityInfo.put("entityData", entity);
-                    newJar.setTag(entityInfo);
-                    if (itemStack_1.isEmpty()) {
-                        playerEntity_1.setStackInHand(hand_1, newJar);
-                    } else if (!playerEntity_1.inventory.insertStack(newJar)) {
-                        playerEntity_1.dropItem(newJar, false);
+                    if(itemStack_1.getItem() == Initializer.BLOCK_CHICKENCUBE.asItem()){
+                        ItemBlockChickenCube theItem= (ItemBlockChickenCube)itemStack_1.getItem();
+                        Logger.log("was CUBE");
+                        if(theItem.isEmpty) {
+                            Logger.log("was Empty");
+                            if (e instanceof ChickenEntity) {
+                                newItem = new ItemStack(Initializer.BLOCK_CHICKENCUBE.asItem());
+                                e.toTag(entity);
+                                entityInfo.putString("genetics:entitytype", e.getName().getString());
+                                entityInfo.putString("entity_id", Registry.ENTITY_TYPE.getId(e.getType()).toString());
+                                entityInfo.put("entityData", entity);
+                                newItem.setTag(entityInfo);
+                                e.removed = true;
+                                itemStack_1.setCount(itemStack_1.getCount() - 1);
+                                if (itemStack_1.isEmpty()) {
+                                    playerEntity_1.setStackInHand(hand_1, newItem);
+                                } else if (!playerEntity_1.inventory.insertStack(newItem)) {
+                                    playerEntity_1.dropItem(newItem, false);
+                                }
+                            }
+                        }
+                    }else if(itemStack_1.getItem() == Initializer.BLOCK_JAR.asItem()) {
+                        Logger.log("was JAR");
+                        ItemBlockJar theItem = (ItemBlockJar) itemStack_1.getItem();
+                        if (theItem.isEmpty) {
+                            Logger.log("was Empty");
+                            newItem = new ItemStack(Initializer.BLOCK_JAR.asItem());
+                            e.toTag(entity);
+                            entityInfo.putString("genetics:entitytype", e.getName().getString());
+                            entityInfo.putString("entity_id", Registry.ENTITY_TYPE.getId(e.getType()).toString());
+                            entityInfo.put("entityData", entity);
+                            newItem.setTag(entityInfo);
+                            e.removed = true;
+                            itemStack_1.setCount(itemStack_1.getCount() - 1);
+
+                        }
+                        if (newItem != null){
+                            if(itemStack_1.isEmpty()) {
+                                playerEntity_1.setStackInHand(hand_1, newItem);
+                            } else if (!playerEntity_1.inventory.insertStack(newItem)) {
+                                playerEntity_1.dropItem(newItem, false);
+                            }
+                        }
                     }
                 }
             }

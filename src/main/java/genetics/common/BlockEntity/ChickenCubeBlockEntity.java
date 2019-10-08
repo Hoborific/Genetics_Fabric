@@ -4,19 +4,18 @@ import genetics.init.Initializer;
 import genetics.util.Logger;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnType;
 import net.minecraft.entity.mob.MobEntityWithAi;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.server.world.ServerTickScheduler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.dimension.DimensionType;
 
-public class JarBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
+public class ChickenCubeBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
 
 
     private MobEntityWithAi entity;
@@ -24,13 +23,13 @@ public class JarBlockEntity extends BlockEntity implements BlockEntityClientSeri
     private CompoundTag entityData;
     private int tickCount = 0;
 
-    public JarBlockEntity() {
-        super(Initializer.JAR_BLOCK_ENTITY);
+    public ChickenCubeBlockEntity() {
+        super(Initializer.CHICKENCUBE_BLOCK_ENTITY);
     }
 
     public CompoundTag toTag(CompoundTag tag) {
+        super.toTag(tag);
         if (myEntityType != null) {
-            super.toTag(tag);
             CompoundTag ent = new CompoundTag();
             tag.put("entityData", entityData);
             tag.putString("entity_id", myEntityType.toString());
@@ -40,8 +39,8 @@ public class JarBlockEntity extends BlockEntity implements BlockEntityClientSeri
     }
 
     public void fromTag(CompoundTag tag) {
-        super.fromTag(tag);
         if (tag != null) {
+            super.fromTag(tag);
             Logger.log("FROM TAG: " + tag.asString());
             this.myEntityType = new Identifier(tag.getString("entity_id"));
             this.entityData = tag.getCompound("entityData");
@@ -49,19 +48,14 @@ public class JarBlockEntity extends BlockEntity implements BlockEntityClientSeri
         }
     }
 
-
     public LivingEntity getEntity() {
         if (entity == null) {
             if (myEntityType != null) {
                 Logger.log("created entity");
-                entity = (AnimalEntity) Registry.ENTITY_TYPE.get(myEntityType).create(world);
-                if(!world.isClient()){
-                    world.getServer().getWorld(entity.dimension).spawnEntity(entity);
-                }
-                if(entity != null) {
-                    entity.fromTag(entityData);
-                    initializeTasks(entity);
-                }
+                entity = (MobEntityWithAi) Registry.ENTITY_TYPE.get(myEntityType).create(world);
+                assert entity != null;
+                entity.fromTag(entityData);
+                initializeTasks(entity);
             }
         }
         return entity;
@@ -74,7 +68,6 @@ public class JarBlockEntity extends BlockEntity implements BlockEntityClientSeri
     public Identifier getMyEntityType(){
         return myEntityType;
     }
-    public CompoundTag getMyEntityData(){ return entityData;}
 
     @Override
     public void fromClientTag(CompoundTag tag) {
@@ -98,13 +91,15 @@ public class JarBlockEntity extends BlockEntity implements BlockEntityClientSeri
         return tag;
     }
 
+    @Override
     public void tick() {
-        if (entity != null) {
-            entity.getMoveControl().tick();
-            entity.tick();
-            if(!world.isClient){
-                world.getServer().getWorld(entity.dimension).tickEntity(entity);
+        tickCount++;
+        if (tickCount >= 20) {
+            if (entity != null) {
+
             }
+            tickCount = 0;
         }
+
     }
 }
