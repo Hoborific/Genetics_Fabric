@@ -32,10 +32,10 @@ public class BaseGenetics implements IGeneticBase {
     @Override
     public int[] getGenetics() {
         if (this.GENETIC_TRACKER.length < 2) {
-            log("ERROR: ENTITY HAS NO GENETICS: " + this.getEntityID() + " " + Objects.requireNonNull(this.getWorld().getEntityById(this.getEntityID())).getClass().getCanonicalName());
+            log("ERROR: ENTITY HAS NO GENETICS: " + this.getEntityID() + " " + this.getWorld().getEntityById(this.getEntityID()));
             initializeGenetics();
             if (this.GENETIC_TRACKER.length < 2) {
-                log("ERROR: ENTITY STILL HAS NO GENETICS: " + this.getEntityID() + " " + Objects.requireNonNull(this.getWorld().getEntityById(this.getEntityID())).getClass().getCanonicalName());
+                log("ERROR: ENTITY STILL HAS NO GENETICS: " + this.getEntityID() + " " + this.getWorld().getEntityById(this.getEntityID()));
                 return new int[]{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
             }
         }
