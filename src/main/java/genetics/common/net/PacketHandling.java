@@ -4,14 +4,14 @@ import genetics.Main;
 import genetics.common.genetics.IGeneticBase;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.network.PacketConsumer;
-import net.minecraft.client.network.packet.CustomPayloadS2CPacket;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.Packet;
+import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.packet.c2s.play.CustomPayloadC2SPacket;
+import net.minecraft.network.packet.s2c.play.CustomPayloadS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.network.packet.CustomPayloadC2SPacket;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.PacketByteBuf;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
@@ -53,7 +53,7 @@ public class PacketHandling {
         int id = PacketByteBuf.readInt();
         PlayerEntity player = PacketContext.getPlayer();
         Supplier supplier = () -> {
-            World wrld = player.world.getWorld();
+            World wrld = player.getEntityWorld();
             Entity en = wrld.getEntityById(id);
             assert en != null;
             int[] genes = ((IGeneticBase) en).getGenetics();
@@ -61,7 +61,7 @@ public class PacketHandling {
             sendPacketToPlayer(craftGeneticPacket(id, genes), player.world, en.getBlockPos());
             return 1;
         };
-        PacketContext.getTaskQueue().executeFuture(supplier);
+        PacketContext.getTaskQueue().submit(supplier);
     };
 
     public static Packet craftGeneticPacket(int id, int[] genes) {

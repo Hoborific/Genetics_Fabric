@@ -1,7 +1,8 @@
 package genetics.items;
 
+import genetics.common.BlockEntity.JarBlockEntity;
 import genetics.util.Logger;
-import net.minecraft.advancement.criterion.Criterions;
+import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -41,7 +42,8 @@ public class ItemBlockJar extends BlockItem {
             CompoundTag compoundTag_1 = itemStack_1.getSubTag("BlockEntityTag");
             BlockEntity blockEntity_1 = world_1.getBlockEntity(blockPos_1);
             if (blockEntity_1 != null) {
-                if (!world_1.isClient && blockEntity_1.shouldNotCopyTagFromItem() && (playerEntity_1 == null || !playerEntity_1.isCreativeLevelTwoOp())) {
+                if (!world_1.isClient && blockEntity_1.copyItemDataRequiresOperator() && (playerEntity_1 == null || !playerEntity_1.isCreativeLevelTwoOp())) {
+                    System.out.println("FAILED BE CONDITIONS, RETURN FALSE");
                     return false;
                 }
                 CompoundTag compoundTag_2 = blockEntity_1.toTag(new CompoundTag());
@@ -49,12 +51,13 @@ public class ItemBlockJar extends BlockItem {
                 compoundTag_2.putInt("y", blockPos_1.getY());
                 compoundTag_2.putInt("z", blockPos_1.getZ());
                 if (itemStack_1.hasTag()) {
-                    if (itemStack_1.getTag().containsKey("entity_id")) {
+                    if (itemStack_1.getTag().contains("entity_id")) {
                         compoundTag_2.putString("entity_id", itemStack_1.getTag().getString("entity_id"));
                         compoundTag_2.put("entityData", itemStack_1.getTag().getCompound("entityData"));
                         Logger.log("wrote item data to blockentity");
+                        Logger.log(compoundTag_2.asString());
                     }
-                    blockEntity_1.fromTag(compoundTag_2);
+                    blockEntity_1.fromTag(null,compoundTag_2);
                 }
             }
 
@@ -69,7 +72,7 @@ public class ItemBlockJar extends BlockItem {
                 assert itemStack_1.getTag() != null;
                 list_1.add(new TranslatableText(("Animal Type: " + itemStack_1.getTag().getString("genetics:entitytype"))));
                 list_1.add(new TranslatableText("entity_id:" + itemStack_1.getTag().getString("entity_id")));
-                //list_1.add(new TranslatableText("data:" + itemStack_1.getTag().getCompound("entityData").toString()));
+                list_1.add(new TranslatableText("data:" + itemStack_1.getTag().getCompound("entityData").toString()));
                 isEmpty = false;
             } else {
                 list_1.add(new TranslatableText("Empty Jar"));
@@ -104,7 +107,7 @@ public class ItemBlockJar extends BlockItem {
                         block_1.onPlaced(world_1, blockPos_1, blockState_2, playerEntity_1, itemStack_1);
 
                         if (playerEntity_1 instanceof ServerPlayerEntity) {
-                            Criterions.PLACED_BLOCK.handle((ServerPlayerEntity) playerEntity_1, blockPos_1, itemStack_1);
+                            Criteria.PLACED_BLOCK.trigger((ServerPlayerEntity) playerEntity_1, blockPos_1, itemStack_1);
                         }
                     }
 

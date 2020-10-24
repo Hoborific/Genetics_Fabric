@@ -3,22 +3,19 @@ package genetics.common.BlockEntity;
 import genetics.init.Initializer;
 import genetics.util.Logger;
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnType;
-import net.minecraft.entity.mob.MobEntityWithAi;
-import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.world.ServerTickScheduler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.dimension.DimensionType;
 
 public class ChickenCubeBlockEntity extends BlockEntity implements BlockEntityClientSerializable, Tickable {
 
 
-    private MobEntityWithAi entity;
+    private PathAwareEntity entity;
     private Identifier myEntityType;
     private CompoundTag entityData;
     private int tickCount = 0;
@@ -38,9 +35,9 @@ public class ChickenCubeBlockEntity extends BlockEntity implements BlockEntityCl
         return tag;
     }
 
-    public void fromTag(CompoundTag tag) {
+    public void fromTag(BlockState bs, CompoundTag tag) {
         if (tag != null) {
-            super.fromTag(tag);
+            super.fromTag(bs,tag);
             Logger.log("FROM TAG: " + tag.asString());
             this.myEntityType = new Identifier(tag.getString("entity_id"));
             this.entityData = tag.getCompound("entityData");
@@ -52,7 +49,7 @@ public class ChickenCubeBlockEntity extends BlockEntity implements BlockEntityCl
         if (entity == null) {
             if (myEntityType != null) {
                 Logger.log("created entity");
-                entity = (MobEntityWithAi) Registry.ENTITY_TYPE.get(myEntityType).create(world);
+                entity = (PathAwareEntity) Registry.ENTITY_TYPE.get(myEntityType).create(world);
                 assert entity != null;
                 entity.fromTag(entityData);
                 initializeTasks(entity);
@@ -61,7 +58,7 @@ public class ChickenCubeBlockEntity extends BlockEntity implements BlockEntityCl
         return entity;
     }
 
-    public void initializeTasks(MobEntityWithAi entity) {
+    public void initializeTasks(PathAwareEntity entity) {
 
     }
 
@@ -72,8 +69,8 @@ public class ChickenCubeBlockEntity extends BlockEntity implements BlockEntityCl
     @Override
     public void fromClientTag(CompoundTag tag) {
         Logger.log(tag.toString());
-        if (tag.containsKey("entity_id")) {
-            if (tag.containsKey("entityData")) {
+        if (tag.contains("entity_id")) {
+            if (tag.contains("entityData")) {
                 entityData = tag.getCompound("entityData");
                 myEntityType = new Identifier(tag.getString("entity_id"));
                 Logger.log("Loaded on client");

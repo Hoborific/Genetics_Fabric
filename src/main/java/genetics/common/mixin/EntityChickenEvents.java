@@ -1,16 +1,17 @@
 package genetics.common.mixin;
 
 import genetics.common.genetics.IGeneticBase;
-import net.minecraft.container.Container;
-import net.minecraft.container.ContainerType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.ContainerLock;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.DyeColor;
 import org.spongepowered.asm.mixin.Mixin;
@@ -20,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.awt.*;
 import java.util.Optional;
 import java.util.Random;
 
@@ -43,8 +45,8 @@ public class EntityChickenEvents {
         }
     }
 
-    @Inject(at = @At("RETURN"), method = "method_6471", cancellable = true) // I was too busy seeing if I could, I never stopped to ask myself if I should, this class is an abomination and a sin against code.
-    public void method_6471(PassiveEntity passiveEntity_1, CallbackInfoReturnable cir) {
+    @Inject(at = @At("RETURN"), method = "createChild", cancellable = true) // I was too busy seeing if I could, I never stopped to ask myself if I should, this class is an abomination and a sin against code.
+    public void createChild(ServerWorld serverWorld,PassiveEntity passiveEntity_1, CallbackInfoReturnable cir) {
 
         ChickenEntity myChicken = EntityType.CHICKEN.create(passiveEntity_1.world);
         if (!passiveEntity_1.world.isClient) {
@@ -58,14 +60,14 @@ public class EntityChickenEvents {
                 DyeColor dyeColor_1 = DyeColor.byId(parent1);
                 DyeColor dyeColor_2 = DyeColor.byId(parent2);
 
-                CraftingInventory DyeInventory = new CraftingInventory(new Container((ContainerType) null, -1) {
+                CraftingInventory DyeInventory = new CraftingInventory(new ScreenHandler( null, -1) {
                     public boolean canUse(PlayerEntity playerEntity_1) {
                         return false;
                     }
                 }, 2, 1);
 
-                DyeInventory.setInvStack(0, new ItemStack(DyeItem.byColor(dyeColor_1)));
-                DyeInventory.setInvStack(1, new ItemStack(DyeItem.byColor(dyeColor_2)));
+                DyeInventory.setStack(0, new ItemStack(DyeItem.byColor(dyeColor_1)));
+                DyeInventory.setStack(1, new ItemStack(DyeItem.byColor(dyeColor_2)));
 
                 Optional var10000 = passiveEntity_1.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, DyeInventory, passiveEntity_1.world).map((craftingRecipe_1) -> {
                     return craftingRecipe_1.craft(DyeInventory);

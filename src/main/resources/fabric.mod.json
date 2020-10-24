@@ -1,11 +1,21 @@
 {
+  "schemaVersion": 1,
   "id": "genetics",
   "name": "Genetics",
   "version": "1.0.0",
   "side": "universal",
-  "initializer": "genetics.Main",
-  "mixins": {
-    "client": "modid.client.json",
-    "common": "modid.common.json"
+  "entrypoints": {
+    "main": [
+      "genetics.Main"
+    ],
+    "client": [
+      "genetics.ClientInit"
+    ]},
+  "mixins": [
+  "modid.common.json",
+  {
+    "config": "modid.client.json",
+    "environment": "client"
   }
+]
 }

@@ -151,6 +151,7 @@ public class EntityGeneticEvents implements IGeneticBase {
                             entityInfo.putString("genetics:entitytype", e.getName().getString());
                             entityInfo.putString("entity_id", Registry.ENTITY_TYPE.getId(e.getType()).toString());
                             entityInfo.put("entityData", entity);
+                            System.out.println("ENTITYINFO AS STRING: " + entityInfo.asString());
                             newItem.setTag(entityInfo);
                             e.removed = true;
                             itemStack_1.setCount(itemStack_1.getCount() - 1);

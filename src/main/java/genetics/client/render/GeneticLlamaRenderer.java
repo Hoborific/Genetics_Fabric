@@ -4,11 +4,14 @@ package genetics.client.render;
 import genetics.client.geneticRenderLogic.BaseColorLogic;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.render.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.client.render.entity.feature.LlamaDecorFeatureRenderer;
 import net.minecraft.client.render.entity.model.LlamaEntityModel;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.LlamaEntity;
 import net.minecraft.util.Identifier;
 
@@ -22,18 +25,14 @@ public class GeneticLlamaRenderer extends MobEntityRenderer<LlamaEntity, LlamaEn
         super(renderManagerIn,  new LlamaEntityModel(0.0F), 0.7F);
         this.addFeature(new LlamaDecorFeatureRenderer(this));
         this.addFeature(new LlamaDyeableFeatureRenderer(this, LLAMA_COAT, new BaseColorLogic(5)));
-        this.bindTexture(LLAMA_BASE);
+        //this.bindTexture(LLAMA_BASE);
 
     }
     @Override
-    public void render(LlamaEntity entity, float x, float y, float z, float entityYaw, float partialTicks, float wtf) {
-        super.render(entity, x, y, z, entityYaw, partialTicks, wtf);
+    public void render(LlamaEntity ent, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+        super.render(ent,f,g,matrixStack,vertexConsumerProvider,i);
     }
-
-    protected Identifier method_4037(LlamaEntity llamaEntity_1) {
-        return TEXTURES[llamaEntity_1.getVariant()];
-    }
-    protected Identifier getTexture(LlamaEntity entity) {
+    public Identifier getTexture(LlamaEntity entity) {
         return LLAMA_BASE;
     }
 }

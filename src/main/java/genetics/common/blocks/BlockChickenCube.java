@@ -10,15 +10,15 @@ import genetics.common.BlockEntity.ChickenCubeBlockEntity;
 import genetics.common.BlockEntity.JarBlockEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockRenderLayer;
-import net.minecraft.block.BlockState;
+import net.fabricmc.fabric.impl.client.indigo.renderer.render.BlockRenderInfo;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.block.Block;
 
 public class BlockChickenCube extends Block implements BlockEntityProvider {
 
@@ -27,10 +27,6 @@ public class BlockChickenCube extends Block implements BlockEntityProvider {
         super(block$Settings_1);
     }
 
-    @Environment(EnvType.CLIENT)
-    public BlockRenderLayer getRenderLayer() {
-        return BlockRenderLayer.TRANSLUCENT;
-    }
 
     @Override
     public BlockEntity createBlockEntity(BlockView blockView) {
@@ -41,7 +37,7 @@ public class BlockChickenCube extends Block implements BlockEntityProvider {
 
     @Override
     public void onBreak(World world_1, BlockPos blockPos_1, BlockState blockState_1, PlayerEntity playerEntity_1) {
-        world_1.playLevelEvent(playerEntity_1, 2001, blockPos_1, getRawIdFromState(blockState_1));
+        //world_1.playSoundFromEntity(playerEntity_1, 2001, blockPos_1, getRawIdFromState(blockState_1));
         if(!world_1.isClient()){
 
         }

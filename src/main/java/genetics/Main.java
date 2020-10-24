@@ -4,11 +4,17 @@ import genetics.client.render.*;
 import genetics.common.BlockEntity.ChickenCubeBlockEntity;
 import genetics.common.BlockEntity.JarBlockEntity;
 import genetics.init.Initializer;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.render.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.render.EntityRendererRegistry;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.network.ClientSidePacketRegistry;
 import net.fabricmc.fabric.api.network.ServerSidePacketRegistry;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.LlamaEntity;
@@ -23,12 +29,6 @@ public class Main implements ModInitializer {
     @Override
     public void onInitialize() {
 
-        EntityRendererRegistry.INSTANCE.register(ChickenEntity.class, GeneticChickenRenderer::new);
-        EntityRendererRegistry.INSTANCE.register(CowEntity.class, GeneticCowRenderer::new);
-        EntityRendererRegistry.INSTANCE.register(LlamaEntity.class, GeneticLlamaRenderer::new);
-        EntityRendererRegistry.INSTANCE.register(PolarBearEntity.class, GeneticPolarBearRenderer::new);
-        BlockEntityRendererRegistry.INSTANCE.register(JarBlockEntity.class, new JarBlockEntityRenderer());
-        BlockEntityRendererRegistry.INSTANCE.register(ChickenCubeBlockEntity.class, new ChickenCubeBlockEntityRenderer());
 
         ClientSidePacketRegistry.INSTANCE.register(GENETIC_SYNC_PACKET, SYNC_PACKET_CONSUMER); // SERVER 2 CLIENT CONSUMER
         ServerSidePacketRegistry.INSTANCE.register(GENETIC_REQUEST_PACKET, REQUEST_PACKET_CONSUMER); // CLIENT TO SERVER CONSUMER

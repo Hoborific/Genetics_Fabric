@@ -3,8 +3,8 @@ package genetics.common.mixin;
 import genetics.common.genetics.IGeneticBase;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.passive.HorseEntity;
-import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.*;
+import net.minecraft.server.world.ServerWorld;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -14,19 +14,14 @@ import java.util.Arrays;
 
 import static genetics.util.Logger.log;
 
-/*ChickenEntity.class, CatEntity.class, CowEntity.class,
-        DonkeyEntity.class, HorseEntity.class, LlamaEntity.class,
-        MooshroomEntity.class, OcelotEntity.class, PandaEntity.class,
-        PandaEntity.class, ParrotEntity.class, PigEntity.class,
-        PolarBearEntity.class, RabbitEntity.class, SheepEntity.class,
-        TurtleEntity.class, WolfEntity.class*/
+
 @Mixin({
         HorseEntity.class
 })
 public class GenericEntityMixin {
 
     @Inject(at = @At("RETURN"), method = "createChild", cancellable = true)
-    public void createChild(PassiveEntity passiveEntity, CallbackInfoReturnable<LivingEntity> cir) {
+    public void createChild(ServerWorld world, PassiveEntity passiveEntity, CallbackInfoReturnable<LivingEntity> cir) {
         LivingEntity child = cir.getReturnValue();
         Entity e = (Entity) (Object) this;
 

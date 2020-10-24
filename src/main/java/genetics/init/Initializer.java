@@ -1,6 +1,7 @@
 package genetics.init;
 
 import genetics.Main;
+import genetics.client.render.*;
 import genetics.common.BlockEntity.ChickenCubeBlockEntity;
 import genetics.common.BlockEntity.JarBlockEntity;
 import genetics.common.blocks.BlockChickenCube;
@@ -10,9 +11,14 @@ import genetics.items.GeneticsSyringeFull;
 import genetics.items.ItemBlockChickenCube;
 import genetics.items.ItemBlockJar;
 import net.fabricmc.fabric.api.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
@@ -37,8 +43,8 @@ public class Initializer {
         Registry.register(Registry.ITEM, new Identifier(Main.MODID, "chickencube"), new ItemBlockChickenCube(BLOCK_CHICKENCUBE, new Item.Settings().group(ItemGroup.MISC)));
         Registry.register(Registry.BLOCK, new Identifier(Main.MODID, "blockchickencube"), BLOCK_CHICKENCUBE);
 
-        JAR_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY, new Identifier(Main.MODID, "entityjar"), BlockEntityType.Builder.create(JarBlockEntity::new, BLOCK_JAR).build(null));
-        CHICKENCUBE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY, new Identifier(Main.MODID, "entitychickencube"), BlockEntityType.Builder.create(ChickenCubeBlockEntity::new, BLOCK_CHICKENCUBE).build(null));
+        JAR_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Main.MODID, "entityjar"), BlockEntityType.Builder.create(JarBlockEntity::new, BLOCK_JAR).build(null));
+        CHICKENCUBE_BLOCK_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Main.MODID, "entitychickencube"), BlockEntityType.Builder.create(ChickenCubeBlockEntity::new, BLOCK_CHICKENCUBE).build(null));
 
     }
 }

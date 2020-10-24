@@ -1,8 +1,6 @@
 package genetics.common.mixin;
 
 import genetics.common.genetics.IGeneticBase;
-import net.minecraft.container.Container;
-import net.minecraft.container.ContainerType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.LlamaEntity;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -11,6 +9,8 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.DyeColor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -40,14 +40,14 @@ public class EntityLlamaEvents {
                 DyeColor dyeColor_1 = DyeColor.byId(parent1);
                 DyeColor dyeColor_2 = DyeColor.byId(parent2);
 
-                CraftingInventory DyeInventory = new CraftingInventory(new Container((ContainerType) null, -1) {
+                CraftingInventory DyeInventory = new CraftingInventory(new ScreenHandler( null, -1) {
                     public boolean canUse(PlayerEntity playerEntity_1) {
                         return false;
                     }
                 }, 2, 1);
 
-                DyeInventory.setInvStack(0, new ItemStack(DyeItem.byColor(dyeColor_1)));
-                DyeInventory.setInvStack(1, new ItemStack(DyeItem.byColor(dyeColor_2)));
+                DyeInventory.setStack(0, new ItemStack(DyeItem.byColor(dyeColor_1)));
+                DyeInventory.setStack(1, new ItemStack(DyeItem.byColor(dyeColor_2)));
 
                 Optional var10000 = passiveEntity_1.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, DyeInventory, passiveEntity_1.world).map((craftingRecipe_1) -> {
                     return craftingRecipe_1.craft(DyeInventory);

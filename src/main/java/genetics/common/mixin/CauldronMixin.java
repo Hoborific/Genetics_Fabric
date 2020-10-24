@@ -3,6 +3,7 @@ package genetics.common.mixin;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.CauldronBlock;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.ChickenEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -25,8 +26,8 @@ public class CauldronMixin {
     private CauldronBlock e = (CauldronBlock) (Object) this;
     private ChickenEntity chicken;
 
-    @Inject(at = @At("HEAD"), method = "activate", cancellable = true)
-    public void activate(BlockState blockState_1, World world_1, BlockPos blockPos_1, PlayerEntity playerEntity_1, Hand hand_1, BlockHitResult blockHitResult_1, CallbackInfoReturnable cir) {
+    @Inject(at = @At("HEAD"), method = "onUse", cancellable = true)
+    public void onUse(BlockState blockState_1, World world_1, BlockPos blockPos_1, PlayerEntity playerEntity_1, Hand hand_1, BlockHitResult blockHitResult_1, CallbackInfoReturnable cir) {
         ItemStack itemStack_1 = playerEntity_1.getStackInHand(hand_1);
         if (itemStack_1.isEmpty()) {
         } else {
@@ -46,7 +47,8 @@ public class CauldronMixin {
                 ChickenEntity theChicken = ((ChickenEntity) entity_1);
                 chicken = theChicken;
                 theChicken.setAiDisabled(true);
-                theChicken.onGround = true;
+                theChicken.setOnGround(true);
+                theChicken.setSwimming(true);
             }
         }
     }
